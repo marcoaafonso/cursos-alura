@@ -11,7 +11,7 @@ class BytebankApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         colorScheme:
-            ColorScheme.fromSwatch(primarySwatch: generateMaterialColor(Colors.green[800])).copyWith(
+            ColorScheme.fromSwatch(primarySwatch: generateMaterialColor(Colors.green[900])).copyWith(
           secondary: Colors.blueAccent[700],
         ),
         buttonTheme: ButtonThemeData(
