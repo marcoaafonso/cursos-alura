@@ -1,24 +1,25 @@
-import 'package:bytebank/screens/transferencia/lista.dart';
 import 'package:flutter/material.dart';
-import 'util/material_color_generator.dart';
+import 'package:bytebank/screens/dashboard.dart';
+import 'package:utilitarios/material_color_generator.dart';
 
-void main() => runApp(BytebankApp());
+void main() => runApp(ByteBankApp());
 
-class BytebankApp extends StatelessWidget {
+class ByteBankApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSwatch(primarySwatch: generateMaterialColor(Colors.green[900])).copyWith(
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: generateMaterialColor(Colors.green[900]))
+            .copyWith(
           secondary: Colors.blueAccent[700],
         ),
         buttonTheme: ButtonThemeData(
             buttonColor: Colors.blueAccent[700],
             textTheme: ButtonTextTheme.primary),
       ),
-      home: ListaTransferencias(),
+      home: DashBoard(),
     );
   }
 }
