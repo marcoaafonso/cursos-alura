@@ -1,31 +1,48 @@
+import 'package:bytebank/components/progresso.dart';
+import 'package:bytebank/database/cliente_dao.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:bytebank/screens/contato/formulario_contato.dart';
 import 'package:flutter/material.dart';
 
 const _tituloAppBar = "Contatos";
+final ClienteDao _dao = ClienteDao();
 
 class ListaContatos extends StatefulWidget {
-  final List<Contato> _contatos = List.empty(growable: true);
-
   @override
-  State<StatefulWidget> createState() {
-    return ListaContatosState();
-  }
+  State<ListaContatos> createState() => _ListaContatosState();
 }
 
-class ListaContatosState extends State<ListaContatos> {
-
+class _ListaContatosState extends State<ListaContatos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(_tituloAppBar),
       ),
-      body: ListView.builder(
-        itemCount: widget._contatos.length,
-        itemBuilder: (context, index) {
-          final contato = widget._contatos[index];
-          return ItemContato(contato);
+      body: FutureBuilder<List<Contato>>(
+        initialData: List.empty(),
+        future: _dao.findAll(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Progresso();
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              final List<Contato> _contatos = snapshot.data as List<Contato>;
+
+              return ListView.builder(
+                itemCount: _contatos.length,
+                itemBuilder: (context, index) {
+                  final Contato contato = _contatos[index];
+                  return _itemContato(contato);
+                },
+              );
+          }
+
+          return Text('Erro');
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -36,25 +53,16 @@ class ListaContatosState extends State<ListaContatos> {
   }
 
   void _chamarFormularioContato(BuildContext context) {
-    Navigator.push(context,
-        MaterialPageRoute<Contato>(builder: (context) {
-      return FormularioContato();
-    })).then((contato) => _atualiza(contato));
-  }
-
-  void _atualiza(Contato? contato) {
-    if (contato != null) {
-      setState(() {
-        widget._contatos.add(contato);
-      });
-    }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => FormularioContato()))
+        .then((value) => setState((){}));
   }
 }
 
-class ItemContato extends StatelessWidget {
+class _itemContato extends StatelessWidget {
   final Contato _contato;
 
-  ItemContato(this._contato);
+  _itemContato(this._contato);
 
   @override
   Widget build(BuildContext context) {

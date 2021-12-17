@@ -17,7 +17,7 @@ class DashBoard extends StatelessWidget {
           children: [
             Image.asset('images/bytebank_logo.png'),
             Material(
-              color: Theme.of(context).primaryColor,
+              color: Colors.green[900], //Theme.of(context).primaryColor,
               child: InkWell(
                 onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => ListaContatos())),

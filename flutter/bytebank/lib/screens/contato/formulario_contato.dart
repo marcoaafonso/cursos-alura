@@ -1,4 +1,5 @@
 import 'package:bytebank/components/editor.dart';
+import 'package:bytebank/database/cliente_dao.dart';
 import 'package:bytebank/models/contato.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,8 @@ const _dicaCampoNome = "";
 const _rotuloCampoNumeroConta = "Número da Conta";
 const _dicaCampoNumeroConta = "00000";
 const _labelBotaConfirmar = "Confirmar";
+
+final ClienteDao _dao = ClienteDao();
 
 class FormularioContato extends StatefulWidget {
 
@@ -41,6 +44,7 @@ class FormularioContatoState extends State<FormularioContato> {
                 rotulo: _rotuloCampoNumeroConta,
                 dica: _dicaCampoNumeroConta,
                 icone: Icons.monetization_on,
+                numerico: true,
               ),
               ElevatedButton(
                 onPressed: () => _criarContato(context),
@@ -56,8 +60,9 @@ class FormularioContatoState extends State<FormularioContato> {
     final int? numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
 
     if (numeroConta != null && nome != null) {
-      final contato = Contato(nome, numeroConta);
-      Navigator.pop(context, contato);
+      final contato = Contato(nome: nome, numeroConta: numeroConta);
+      _dao.save(contato).then((id) => Navigator.of(context).pop());
+
     }
   }
 }
