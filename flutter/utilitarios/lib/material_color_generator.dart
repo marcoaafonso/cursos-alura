@@ -26,3 +26,4 @@ Color tintColor(Color color, double factor) => Color.fromRGBO(
     tintValue(color.green, factor),
     tintValue(color.blue, factor),
     1);
+
